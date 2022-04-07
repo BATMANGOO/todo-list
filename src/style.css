@@ -18,11 +18,10 @@ body {
     grid-template-columns: 1fr 4fr;
     grid-template-rows: 1fr;
 }
-
+/* nav styles */
 .nav-bar {
-    background: linear-gradient(to right, #00c6ff, #0072ff);
+    background: linear-gradient(to right, #e66465, #9198e5);
     padding: 10px;
-    /* text-align: center; */
     grid-column: 1 / 3;
     display: flex;
     justify-content: space-between;
@@ -39,11 +38,14 @@ body {
     padding: 0 10px;
 }
 
+/* side-bar styles */
 .projects-bar {
     height: 100vh;
     grid-column: 1 / 2;
     grid-row-start: 2;
 }
+
+/* todo-list styles */
 
 .todo-container {
     padding: 20px;
