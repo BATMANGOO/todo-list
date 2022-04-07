@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Check-It</title>
-    <script src="https://unpkg.com/lodash@4.17.20"></script>
-  </head>
+    <meta charset="utf-8">
+    <title>Output Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="index.bundle.js"></script></head>
   <body>
-    <!-- create form -->
     <div id="app">
       <nav class="nav-bar">
         <h1 class="nav-title">Check It</h1>
         <button class="add-todo">Add todo</button>
       </nav>
       <div class="projects-bar">
+        <div class="current-project">
+          <p>Current Project:</p>
+          <h2 class="current-proj-title">Some Project</h2>
+        </div>
         <button class="add-project">Create Project</button>
         <div class="project-list">
           <div class="project-item">
@@ -29,6 +31,5 @@
         </div>
       </div>
     </div>
-    <script src="bundle.js"></script>
   </body>
 </html>
