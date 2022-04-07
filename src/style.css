@@ -8,11 +8,6 @@
     box-sizing: border-box;
 }
 
-body {
-    width: 100%;
-    height: 100%;
-}
-
 #app {
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -55,12 +50,39 @@ body {
     margin: 10px 0;
 }
 
+.current-project > p {
+    padding: 0 0 10px 0;
+}
+
+.current-proj-title {
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 5px;
+}
+
 
 /* todo-list styles */
 
 .todo-container {
+    text-align: center;
     padding: 20px;
     height: 100vw;
     grid-column: 2 / 3;
     grid-row-start: 2;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-items: center;
+}
+
+.todo-item {
+    border: 1px solid black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 5px;
+    
 }
