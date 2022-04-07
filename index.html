@@ -28,19 +28,59 @@
           <p class="todo-description">Got a lot of stuff to do, no time to slack around</p>
           <p class="todo-date">04/06/2022</p>
           <p class="todo-priority">High</p>
+          <div class="todo-buttons">
+            <button class="edit-todo">Edit</button>
+            <button class="delete-todo">Delete</button>
+          </div>
         </div>
         <div class="todo-item">
           <p class="todo-name">Some Todo</p>
           <p class="todo-description">Got a lot of stuff to do, no time to slack around</p>
           <p class="todo-date">04/06/2022</p>
           <p class="todo-priority">High</p>
+          <div class="todo-buttons">
+            <button class="edit-todo">Edit</button>
+            <button class="delete-todo">Delete</button>
+          </div>
         </div>
         <div class="todo-item">
           <p class="todo-name">Some Todo</p>
           <p class="todo-description">Got a lot of stuff to do, no time to slack around</p>
           <p class="todo-date">04/06/2022</p>
           <p class="todo-priority">High</p>
+          <div class="todo-buttons">
+            <button class="edit-todo">Edit</button>
+            <button class="delete-todo">Delete</button>
+          </div>
         </div>
+      </div>
+      <div class="form-container hide">
+        <div class="cancel-container">
+          <div class="cancel-button">X</div>
+        </div>
+        <form>
+          <label>
+            Title:
+            <input type="text" name="title" required>
+          </label>
+          <label>
+            Description:
+            <textarea type="text" name="description" rows="10" required></textarea>
+          </label>
+          <label>
+            Date:
+            <input type="date" name="date" required>
+          </label>
+          <label>
+            Priority:
+            <select name="priority" required>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </label>
+          <button type="submit">Add todo</button>
+        </form>
       </div>
     </div>
   </body>
