@@ -40,10 +40,21 @@ body {
 
 /* side-bar styles */
 .projects-bar {
-    height: 100vh;
+    border-right: 1px solid #e66465;
+    height: 100%;
     grid-column: 1 / 2;
     grid-row-start: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
 }
+
+.add-project {
+    margin: 10px 0;
+}
+
 
 /* todo-list styles */
 
