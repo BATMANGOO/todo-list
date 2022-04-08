@@ -8,7 +8,22 @@ let form = document.querySelector('form');
 let formContainer = document.querySelector('.form-container');
 let formCancelBtn = document.querySelector('.cancel-button');
 let todoContainer = document.querySelector('.todo-container');
-class Project {}
+
+class Project {
+  constructor(name) {
+    this.name = name;
+    this.todos = [];
+  }
+
+  addTodo(todo) {
+      this.todos.push(todo);
+    }
+
+  showtodos() {
+    return this.todos;
+  }
+
+}
 
 
 class Todo {
@@ -38,6 +53,17 @@ class Todo {
         return todo;
     }
 }
+
+let todo1 = new Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High', false);
+let todo2 = new Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High', false);
+
+let project1 = new Project('Project 1');
+project1.addTodo(todo1);
+let project2 = new Project('Project 2');
+project2.addTodo(todo2);
+
+console.log('project 1', project1.showtodos());
+console.log('project 2', project2.showtodos());
 
 addTodoBtn.addEventListener('click', (e) => {
   e.preventDefault();
