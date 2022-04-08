@@ -12,7 +12,8 @@
 #app {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100%;
 }
 /* nav styles */
 .nav-bar {
@@ -37,7 +38,7 @@
 /* side-bar styles */
 .projects-bar {
     border-right: 1px solid #e66465;
-    height: 100%;
+    height: 100vh;
     grid-column: 1 / 2;
     grid-row-start: 2;
     padding: 20px;
@@ -68,13 +69,14 @@
     text-align: center;
     margin-top: 10px;
     padding: 20px;
-    height: 100vw;
+    height: 100vh;
     grid-column: 2 / 3;
-    grid-row-start: 2;
     display: grid;
     gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-template-rows: 300px;
     justify-items: center;
+    justify-content: center;
 }
 
 .todo-item {
