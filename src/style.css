@@ -57,11 +57,23 @@
     cursor: default;
 }
 
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project {
+    border: var(--onepx-black-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--tenpx-padding);
+}
+
 .project-name {
     font-weight: bold;
     text-transform: uppercase;
-    padding: 10px;
-    border: var(--onepx-black-border);
 }
 
 .project-name:not(:first-child) {
