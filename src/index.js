@@ -9,6 +9,8 @@ let formContainer = document.querySelector('.form-container');
 let formCancelBtn = document.querySelector('.cancel-button');
 let todoContainer = document.querySelector('.todo-container');
 let projectsContainer = document.querySelector('.project-list');
+let projects = projectsContainer.childNodes;
+
 // create project form in index.html
 class Project {
   constructor(name) {
@@ -34,6 +36,32 @@ class Project {
     return project;
   }
 };
+
+class displayTodos extends Project {
+  constructor(todos) {
+    super(todos);
+    this.todos = todos;
+  }
+
+  render() {
+    this.todos.forEach(todo => {
+      todo.style.width = '300px';
+      todo.innerHTML = `
+      <div class='todo-item'>
+        <p class="todo-name">${this.title}</p>
+        <p class="todo-description">${this.description}</p>
+        <p class="todo-date">${this.dueDate}</p>
+        <p class="todo-priority">${this.priority}</p>
+        <div class="todo-buttons">
+          <button class="edit-todo">Edit</button>
+          <button class="delete-todo">Delete</button>
+          <button class="check-todo">Check</button>
+        </div>
+      </div>
+      `;
+    });
+  }
+ }
 
 class Todo {
     constructor(title, description, dueDate, priority, completed) {
@@ -64,15 +92,17 @@ class Todo {
 };
 
 let todo1 = new Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High', false);
-let todo2 = new Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High', false);
 
 let project1 = new Project('Project 1');
 project1.addTodo(todo1);
 
 projectsContainer.appendChild(project1.render());
 
-console.log('project 1', project1.showtodos());
-console.log('project 2', project2.showtodos());
+projects.forEach(project => {
+  project.addEventListener('click', e => {
+    console.log(e.target);
+  })
+});
 
 addTodoBtn.addEventListener('click', (e) => {
   e.preventDefault();
@@ -87,3 +117,5 @@ formCancelBtn.addEventListener('click', (e) => {
 });
   
 // document.body.appendChild(component());
+
+console.log(projects);
