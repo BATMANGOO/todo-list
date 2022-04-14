@@ -13,7 +13,6 @@ let formCancelBtn = document.querySelector('.cancel-button');
 let todoContainer = document.querySelector('.todo-container');
 let projectsContainer = document.querySelector('.project-list');
 let projects = projectsContainer.childNodes;
-let projects2 = document.getElementsByClassName('project');
 let projectFormName = document.querySelector('.project-form-name');
 
 // console.log({projects});
@@ -89,25 +88,24 @@ const Todo = (title, description, dueDate, priority, completed) => {
 };
 
 let todo1 = Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High', false);
-
+let todo2 = Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High', false);
 let project1 = Project('Family time');
-projectsArray.push(project1);
-console.log(projectsArray);
+let project2 = Project('Work');
 project1.addTodo(todo1);
+project2.addTodo(todo2);
+projectsArray.push(project1, project2);
+console.log(projectsArray);
 
 // console.log(projects)
 project1.render();
+project2.render();
 
 projects.forEach(project => {
   project.addEventListener('click', (e) => {
+    console.log(e.target);
     if (e.target.classList.contains('project-delete')) {
       projectsContainer.removeChild(project);
     }
-    // if () {
-    //   console.log('project exists');
-    // } else {
-    //   console.log('project does not exist');
-    // }
     projectsArray.find(project => {
       if (project.getId() === e.target.getAttribute('data-id')) {
         console.log('project exists');
@@ -117,13 +115,6 @@ projects.forEach(project => {
         console.log('project does not exist');
       }
     })
-    // if(projectsArray.includes(e.target.getAttribute('data-id'))) {
-    //   console.log('project exists');
-    // } else {
-    //   console.log('project does not exist');
-    // }
-    console.log(e.target.getAttribute('data-id'));
-
   })
 });
 
@@ -134,7 +125,7 @@ addTodoBtn.addEventListener('click', (e) => {
 });
 
 projectFormBtn.addEventListener('click', (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   projectFormContainer.classList.toggle('hide2');
 });
 
