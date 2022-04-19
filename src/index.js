@@ -20,6 +20,7 @@ let projectFormName = document.querySelector('.project-form-name');
 let projectsArray = [];
 let currentProject = null;
 
+
 const Project = (name) => {
   const project = {};
   project.id = _.uniqueId();
@@ -102,19 +103,23 @@ project2.render();
 
 projects.forEach(project => {
   project.addEventListener('click', (e) => {
-    console.log(e.target);
+    // console.log(e.target);
     if (e.target.classList.contains('project-delete')) {
       projectsContainer.removeChild(project);
-    }
-    projectsArray.find(project => {
-      if (project.getId() === e.target.getAttribute('data-id')) {
-        console.log('project exists');
-        currentProject = project;
-        currentProject.renderTodos();
-      } else {
-        console.log('project does not exist');
-      }
-    })
+    };
+    const clickedProject = projectsArray.find(project => project.getId() === e.target.getAttribute('data-id'));
+    console.log(clickedProject);
+    // projectsArray.find(project => {
+    //   // console.log(e.target.getAttribute('data-id'));
+    //   // console.log(project.getId());
+    //   // if (projectsArray.find(project => )) {
+    //   //   console.log('project exists');
+    //   //   currentProject = project;
+    //   //   currentProject.renderTodos();
+    //   // } else {
+    //   //   console.log('project does not exist');
+    //   // }
+    // })
   })
 });
 
@@ -169,3 +174,4 @@ formCancelBtn.addEventListener('click', (e) => {
 // document.body.appendChild(component());
 
 // console.log(projects);
+console.log(projectsArray.find(project => project.getId() === '1'));
