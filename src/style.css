@@ -126,6 +126,10 @@
     border-radius: 5px;
 }
 
+.checked {
+    text-decoration: line-through;
+}
+
 .todo-name {
     font-weight: bold;
     text-transform: uppercase;

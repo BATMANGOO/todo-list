@@ -44,6 +44,16 @@ const Project = (name) => {
     project.todos = project.todos.filter(todo => todo.id !== id);
   }
 
+  project.checkTodo = id => {
+    const todo = project.todos.find(todo => todo.id === id);
+    if (todo.completed === false) {
+      todo.completed = true;
+    } else {
+      todo.completed = false;
+    }
+    return todo;
+  }
+
   project.renderTodos = () => {
     let todos = project.getTodos();
     todoContainer.innerHTML = '';
@@ -74,6 +84,10 @@ const Todo = (title, description, dueDate, priority) => {
   todo.priority = priority;
   todo.completed = false;
 
+  todo.completedStatus = () => {
+    return todo.completed;
+  }
+
   todo.render = () => {
     let todoContainer = document.createElement('div');
     todoContainer.setAttribute('data-id', todo.id);
@@ -95,11 +109,6 @@ const Todo = (title, description, dueDate, priority) => {
   return todo;
 };
 
-// work on this
-// function deleteTodo(e) {
-//   const todoID = e.target.
-// }
-
 function setCurrentProj() {
   projects.forEach(project => {
     project.addEventListener('click', (e) => {
@@ -115,6 +124,7 @@ function setCurrentProj() {
         currentProjTitle.innerHTML = currentProject.name;
         currentProject.renderTodos();
         deleteTodoEvent(currentProject);
+        toggleTodoCheck(currentProject);
       }
     })
   })
@@ -128,13 +138,30 @@ function deleteProjEvent(project, e) {
 };
 
 function deleteTodoEvent(currentProject) {
-  console.log(todos)
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
       if(e.target.classList.contains('delete-todo')) {
         todoContainer.removeChild(todo);
         currentProject.deleteTodo(e.target.parentNode.parentNode.getAttribute('data-id'));
         console.log(currentProject.getTodos());
+      }
+    });
+  });
+};
+
+function toggleTodoCheck(currentProject) {
+  todos.forEach(todo => {
+    todo.addEventListener('click', e => {
+      if(e.target.classList.contains('check-todo')) {
+        const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
+        const todo = currentProject.checkTodo(todoID);
+        e.target.parentNode.parentNode.classList.toggle('checked');
+        // change innerHTML of check-todo button
+        if (todo.completedStatus() === true) {
+          e.target.innerHTML = 'Uncheck';
+        } else {
+          e.target.innerHTML = 'Check';
+        }
       }
     })
   })
@@ -160,6 +187,7 @@ createTodoBtn.addEventListener('click', (e) => {
   currentProject.addTodo(todo);
   currentProject.renderTodos();
   deleteTodoEvent(currentProject);
+  toggleTodoCheck(currentProject);
   form.reset();
   formContainer.classList.toggle('hide');
 });
@@ -198,3 +226,4 @@ currentProjTitle.innerHTML = currentProject.name;
 currentProject.renderTodos();
 setCurrentProj();
 deleteTodoEvent(currentProject);
+toggleTodoCheck(currentProject);
