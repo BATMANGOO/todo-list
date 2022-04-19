@@ -1,21 +1,21 @@
 import _, { create, uniqueId } from 'lodash';
 import './style.css';
 
-let addTodoBtn = document.querySelector('.add-todo')
-let createTodoBtn = document.querySelector('.create-todo');
-let projectFormBtn = document.querySelector('.add-project');
-let createProjBtn = document.querySelector('.create-project');
-let projectFormContainer = document.querySelector('.proj-form-container');
-let projectForm = document.querySelector('.project-form');
-let form = document.querySelector('.todo-form');
-let formContainer = document.querySelector('.form-container');
-let formCancelBtn = document.querySelector('.cancel-button');
-let todoContainer = document.querySelector('.todo-container');
-let projectsContainer = document.querySelector('.project-list');
-let projects = projectsContainer.childNodes;
-let projectFormName = document.querySelector('.project-form-name');
-
-// console.log({projects});
+const addTodoBtn = document.querySelector('.add-todo')
+const currentProjTitle = document.querySelector('.current-proj-title');
+const createTodoBtn = document.querySelector('.create-todo');
+const projectFormBtn = document.querySelector('.add-project');
+const createProjBtn = document.querySelector('.create-project');
+const newProjectname = document.querySelector('input[name="name"]');
+const projectFormContainer = document.querySelector('.proj-form-container');
+const projectForm = document.querySelector('.project-form');
+const form = document.querySelector('.todo-form');
+const formContainer = document.querySelector('.form-container');
+const formCancelBtn = document.querySelector('.cancel-button');
+const todoContainer = document.querySelector('.todo-container');
+const projectsContainer = document.querySelector('.project-list');
+const projects = projectsContainer.childNodes;
+const projectFormName = document.querySelector('.project-form-name');
 
 let projectsArray = [];
 let currentProject = null;
@@ -88,6 +88,26 @@ const Todo = (title, description, dueDate, priority, completed) => {
   return todo;
 };
 
+function addEvent() {
+  projects.forEach(project => {
+    project.addEventListener('click', (e) => {
+      let targetClassList = e.target.classList;
+      const projectID = e.target.getAttribute('data-id')
+      const clickedProject = projectsArray.find(project => project.getId() === projectID);
+
+      if (targetClassList.contains('project-delete')) {
+        projectsContainer.removeChild(project);
+        projectsArray = projectsArray.filter(project => project.getId() !== e.target.parentNode.getAttribute('data-id'));
+        currentProject = projectsArray[projectsArray.length - 1];
+        return currentProject.renderTodos();
+      };
+      currentProject = clickedProject;
+      currentProjTitle.innerHTML = currentProject.name;
+      return currentProject.renderTodos();
+    })
+  });
+}
+
 let todo1 = Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High', false);
 let todo2 = Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High', false);
 let project1 = Project('Family time');
@@ -95,33 +115,9 @@ let project2 = Project('Work');
 project1.addTodo(todo1);
 project2.addTodo(todo2);
 projectsArray.push(project1, project2);
-console.log(projectsArray);
 
-// console.log(projects)
 project1.render();
 project2.render();
-
-projects.forEach(project => {
-  project.addEventListener('click', (e) => {
-    // console.log(e.target);
-    if (e.target.classList.contains('project-delete')) {
-      projectsContainer.removeChild(project);
-    };
-    const clickedProject = projectsArray.find(project => project.getId() === e.target.getAttribute('data-id'));
-    console.log(clickedProject);
-    // projectsArray.find(project => {
-    //   // console.log(e.target.getAttribute('data-id'));
-    //   // console.log(project.getId());
-    //   // if (projectsArray.find(project => )) {
-    //   //   console.log('project exists');
-    //   //   currentProject = project;
-    //   //   currentProject.renderTodos();
-    //   // } else {
-    //   //   console.log('project does not exist');
-    //   // }
-    // })
-  })
-});
 
 addTodoBtn.addEventListener('click', (e) => {
   e.preventDefault();
@@ -130,21 +126,6 @@ addTodoBtn.addEventListener('click', (e) => {
 });
 
 projectFormBtn.addEventListener('click', (e) => {
-  // e.preventDefault();
-  projectFormContainer.classList.toggle('hide2');
-});
-
-createProjBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  let projectName = projectForm.elements.name.value;
-  let project = Project(projectName);
-  projectsArray.push(project);
-  project.render();
-  console.log(projectsArray);
-  currentProject = project;
-  currentProject.renderTodos();
-  console.log({currentProject})
-  projectForm.reset();
   projectFormContainer.classList.toggle('hide2');
 });
 
@@ -155,15 +136,23 @@ createTodoBtn.addEventListener('click', (e) => {
   let dueDate = form.elements.date.value;
   let priority = form.elements.priority.value;
   let completed = false;
-  console.log({ title, description, dueDate, priority, completed });
   let todo = Todo(title, description, dueDate, priority, completed);
-  let project = currentProject.addTodo(todo);
+  currentProject.addTodo(todo);
   currentProject.renderTodos();
   form.reset();
   formContainer.classList.toggle('hide');
 });
 
-
+createProjBtn.addEventListener('click', (e) => {
+  const project = Project(newProjectname.value);
+  projectsArray.push(project);
+  currentProject = project;
+  currentProject.render();
+  currentProject.renderTodos();
+  addEvent();
+  newProjectname.value = '';
+  projectFormContainer.classList.toggle('hide2');
+});
 
 formCancelBtn.addEventListener('click', (e) => { 
   e.preventDefault();
@@ -174,4 +163,7 @@ formCancelBtn.addEventListener('click', (e) => {
 // document.body.appendChild(component());
 
 // console.log(projects);
-console.log(projectsArray.find(project => project.getId() === '1'));
+currentProject = projectsArray[0];
+currentProjTitle.innerHTML = currentProject.name;
+currentProject.renderTodos();
+addEvent();

@@ -126,6 +126,13 @@
     border-radius: 5px;
 }
 
+.todo-name {
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
 /* form style */
 
 .form-container, .proj-form-container {
