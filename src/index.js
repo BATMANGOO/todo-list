@@ -150,6 +150,7 @@ function deleteProjEvent(project, e) {
   projectsContainer.removeChild(project);
   projectsArray = projectsArray.filter(project => project.getId() !== e.target.parentNode.getAttribute('data-id'));
   currentProject = projectsArray[projectsArray.length - 1];
+  currentProjTitle.innerHTML = currentProject.name;
   return currentProject.renderTodos();
 };
 
