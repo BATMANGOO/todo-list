@@ -6,6 +6,7 @@ const currentProjTitle = document.querySelector('.current-proj-title');
 const createTodoBtn = document.querySelector('.create-todo');
 const projectFormBtn = document.querySelector('.add-project');
 const createProjBtn = document.querySelector('.create-project');
+const closeProjForm = document.querySelector('.close-project-form');
 const newProjectname = document.querySelector('input[name="name"]');
 const projectFormContainer = document.querySelector('.proj-form-container');
 const projectForm = document.querySelector('.project-form');
@@ -54,6 +55,19 @@ const Project = (name) => {
     return todo;
   }
 
+  project.getTodo = (id) => {
+    return project.todos.find(todo => todo.id === id);
+  }
+
+  project.editTodo = (id, title, description, dueDate, priority) => {
+    const todo = project.todos.find(todo => todo.id === id);
+    todo.title = title;
+    todo.description = description;
+    todo.dueDate = dueDate;
+    todo.priority = priority;
+    return todo;
+  }
+
   project.renderTodos = () => {
     let todos = project.getTodos();
     todoContainer.innerHTML = '';
@@ -67,7 +81,7 @@ const Project = (name) => {
 
   project.render = () => {
     projectsContainer.innerHTML += `
-      <div data-id=${project.id} class="project project-name">${project.name}<button class="project-delete">X</button></div>
+      <div data-id=${project.id} class="project project-name">${project.name}<button class="project-delete btn btn-danger">X</button></div>
     `;
     return projectsContainer;
   }
@@ -94,14 +108,16 @@ const Todo = (title, description, dueDate, priority) => {
     todoContainer.classList.add('todo-item');
     todoContainer.style.width = '300px';
     todoContainer.innerHTML = `
-      <p class="todo-name">${todo.title}</p>
-      <p class="todo-description">${todo.description}</p>
-      <p class="todo-date">${todo.dueDate}</p>
-      <p class="todo-priority">${todo.priority}</p>
+      <div class='todo-info'>
+        <p class="todo-name">${todo.title}</p>
+        <p class="todo-description">${todo.description}</p>
+        <p class="todo-date">${todo.dueDate}</p>
+        <p class="todo-priority">${todo.priority}</p>
+      </div>
       <div class="todo-buttons">
-        <button class="edit-todo">Edit</button>
-        <button class="delete-todo">Delete</button>
-        <button class="check-todo">Check</button>
+        <button class="edit-todo btn btn-success">Edit</button>
+        <button class="delete-todo btn btn-danger">Delete</button>
+        <button class="check-todo btn btn-warning">Check</button>
       </div>
     `;
     return todoContainer;
@@ -109,6 +125,7 @@ const Todo = (title, description, dueDate, priority) => {
   return todo;
 };
 
+// set selected project as current and render their todos
 function setCurrentProj() {
   projects.forEach(project => {
     project.addEventListener('click', (e) => {
@@ -123,8 +140,7 @@ function setCurrentProj() {
         currentProject = clickedProject;
         currentProjTitle.innerHTML = currentProject.name;
         currentProject.renderTodos();
-        deleteTodoEvent(currentProject);
-        toggleTodoCheck(currentProject);
+        todoEvents();
       }
     })
   })
@@ -145,10 +161,11 @@ function deleteTodoEvent(currentProject) {
         currentProject.deleteTodo(e.target.parentNode.parentNode.getAttribute('data-id'));
         console.log(currentProject.getTodos());
       }
-    });
-  });
+    })
+  })
 };
 
+// check todo as completed/incomplete
 function toggleTodoCheck(currentProject) {
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
@@ -165,6 +182,64 @@ function toggleTodoCheck(currentProject) {
       }
     })
   })
+};
+
+// edit clicked todo
+function editTodoEvent(currentProject) {
+  todos.forEach(todo => {
+    todo.addEventListener('click', e => {
+      if(e.target.classList.contains('edit-todo')) {
+        // formContainer.classList.toggle('hide');
+        const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
+        const chosenTodo = currentProject.getTodo(todoID);
+        const editForm = document.createElement('form');
+        editForm.innerHTML = `
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" value="${chosenTodo.title}">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" value="${chosenTodo.description}">
+          </div>
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" class="form-control" id="dueDate" value="${chosenTodo.dueDate}">
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select class="form-control" id="priority">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <button type="submit" class="submit-edit btn btn-primary">Submit</button>
+        `;
+        todoContainer.replaceChild(editForm, todo);
+        const submitEditButton = editForm.querySelector('.submit-edit');
+
+        submitEditButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          const title = editForm.querySelector('#title').value;
+          const description = editForm.querySelector('#description').value;
+          const dueDate = editForm.querySelector('#dueDate').value;
+          const priority = editForm.querySelector('#priority').value;
+          const editedTodo = currentProject.editTodo(todoID, title, description, dueDate, priority);
+          todoContainer.replaceChild(editedTodo.render(), editForm);
+          console.log(currentProject.getTodos());
+          todoEvents();
+        });
+      }
+    })
+  })
+};
+
+// bundle repetitive functions into one function
+function todoEvents() {
+  deleteTodoEvent(currentProject);
+  toggleTodoCheck(currentProject);
+  editTodoEvent(currentProject);
 }
 
 addTodoBtn.addEventListener('click', (e) => {
@@ -186,8 +261,7 @@ createTodoBtn.addEventListener('click', (e) => {
   let todo = Todo(title, description, dueDate, priority);
   currentProject.addTodo(todo);
   currentProject.renderTodos();
-  deleteTodoEvent(currentProject);
-  toggleTodoCheck(currentProject);
+  todoEvents();
   form.reset();
   formContainer.classList.toggle('hide');
 });
@@ -208,15 +282,25 @@ formCancelBtn.addEventListener('click', (e) => {
   formContainer.classList.toggle('hide');
   form.reset();
 });
+
+closeProjForm.addEventListener('click', (e) => {
+  e.preventDefault();
+  projectFormContainer.classList.toggle('hide2');
+  newProjectname.value = '';
+});
   
 // set events for current project on initial page load
 
 let todo1 = Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High');
 let todo2 = Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High');
+let todo3 = Todo('Buy Eggs', 'Buy eggs for the family', '2020-01-01', 'High');
+let todo4 = Todo('Buy flower', 'Buy flower for the family', '2020-01-01', 'High');
 let project1 = Project('Family time');
 let project2 = Project('Work');
 
 project1.addTodo(todo1);
+project1.addTodo(todo3);
+project1.addTodo(todo4);
 project2.addTodo(todo2);
 projectsArray.push(project1, project2);
 project1.render();
@@ -227,3 +311,4 @@ currentProject.renderTodos();
 setCurrentProj();
 deleteTodoEvent(currentProject);
 toggleTodoCheck(currentProject);
+editTodoEvent(currentProject);

@@ -2,6 +2,7 @@
     --title-color: #f8f8f2;
     --onepx-black-border: 1px solid black;
     --tenpx-padding: 10px;
+    --five-pixel-radius: 5px;
 }
 
 * {
@@ -49,6 +50,12 @@
     text-align: center;
 }
 
+.current-project > p {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 .add-project {
     padding: var(--tenpx-padding);
 }
@@ -69,6 +76,7 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--tenpx-padding);
+    border-radius: var(--five-pixel-radius);
 }
 
 .project-name {
@@ -94,8 +102,8 @@
 
 .current-proj-title {
     border: var(--onepx-black-border);
-    padding: 2px;
-    border-radius: 5px;
+    padding: 5px;
+    border-radius: var(--five-pixel-radius);
 }
 
 
@@ -118,12 +126,21 @@
 .todo-item {
     border: var(--onepx-black-border);
     text-align: center;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-around; */
     max-width: 300px;
     max-height: 300px;
     border-radius: 5px;
+}
+
+.todo-info {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    /* padding: 10px; */
 }
 
 .checked {
@@ -134,6 +151,7 @@
     font-weight: bold;
     text-transform: uppercase;
     border-bottom: 1px solid black;
+    width: 100%;
     padding-bottom: 10px;
 }
 
@@ -145,7 +163,7 @@
     padding: 30px;
     background-color: rgba(143, 151, 229, 0.8);
     position: absolute;
-    top: 30%;
+    top: 10%;
     left: 40%;
     width: 30vw;
 }
