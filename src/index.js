@@ -12,7 +12,6 @@ const createProjBtn = document.querySelector('.create-project');
 const closeProjForm = document.querySelector('.close-project-form');
 const newProjectname = document.querySelector('input[name="name"]');
 const projectFormContainer = document.querySelector('.proj-form-container');
-const projectForm = document.querySelector('.project-form');
 const form = document.querySelector('.todo-form');
 const formContainer = document.querySelector('.form-container');
 const formCancelBtn = document.querySelector('.cancel-button');
@@ -20,7 +19,6 @@ const todoContainer = document.querySelector('.todo-container');
 const todos = todoContainer.childNodes;
 const projectsContainer = document.querySelector('.project-list');
 const projects = projectsContainer.childNodes;
-const projectFormName = document.querySelector('.project-form-name');
 
 let projectsArray = [];
 let currentProject = null;
@@ -328,4 +326,3 @@ window.addEventListener('load', () => {
   todoEvents();
 });
 
-// localStorage.clear();
