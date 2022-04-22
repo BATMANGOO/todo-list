@@ -1,4 +1,7 @@
-import _, { create, uniqueId } from 'lodash';
+import _, {
+  create,
+  uniqueId
+} from 'lodash';
 import './style.css';
 
 const addTodoBtn = document.querySelector('.add-todo')
@@ -21,7 +24,6 @@ const projectFormName = document.querySelector('.project-form-name');
 
 let projectsArray = [];
 let currentProject = null;
-
 
 const Project = (name) => {
   const project = {};
@@ -71,7 +73,7 @@ const Project = (name) => {
   project.renderTodos = () => {
     let todos = project.getTodos();
     todoContainer.innerHTML = '';
-    if(todos.length <= 0) {
+    if (todos.length <= 0) {
       return todoContainer.innerHTML = `<p>No todos for this project</p>`;
     }
     return todos.forEach(todo => {
@@ -112,7 +114,7 @@ const Todo = (title, description, dueDate, priority) => {
         <p class="todo-name">${todo.title}</p>
         <p class="todo-description">${todo.description}</p>
         <p class="todo-date">${todo.dueDate}</p>
-        <p class="todo-priority">${todo.priority}</p>
+        <p class="todo-priority">Priority:</br>${todo.priority}</p>
       </div>
       <div class="todo-buttons">
         <button class="edit-todo btn btn-success">Edit</button>
@@ -135,7 +137,9 @@ function setCurrentProj() {
 
       if (targetClassList.contains('project-delete')) {
         deleteProjEvent(project, e);
-        console.log({currentProject})
+        console.log({
+          currentProject
+        })
       } else {
         currentProject = clickedProject;
         currentProjTitle.innerHTML = currentProject.name;
@@ -157,7 +161,7 @@ function deleteProjEvent(project, e) {
 function deleteTodoEvent(currentProject) {
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
-      if(e.target.classList.contains('delete-todo')) {
+      if (e.target.classList.contains('delete-todo')) {
         todoContainer.removeChild(todo);
         currentProject.deleteTodo(e.target.parentNode.parentNode.getAttribute('data-id'));
         console.log(currentProject.getTodos());
@@ -170,7 +174,7 @@ function deleteTodoEvent(currentProject) {
 function toggleTodoCheck(currentProject) {
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
-      if(e.target.classList.contains('check-todo')) {
+      if (e.target.classList.contains('check-todo')) {
         const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
         const todo = currentProject.checkTodo(todoID);
         e.target.parentNode.parentNode.classList.toggle('checked');
@@ -189,7 +193,7 @@ function toggleTodoCheck(currentProject) {
 function editTodoEvent(currentProject) {
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
-      if(e.target.classList.contains('edit-todo')) {
+      if (e.target.classList.contains('edit-todo')) {
         // formContainer.classList.toggle('hide');
         const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
         const chosenTodo = currentProject.getTodo(todoID);
@@ -262,6 +266,8 @@ createTodoBtn.addEventListener('click', (e) => {
   let todo = Todo(title, description, dueDate, priority);
   currentProject.addTodo(todo);
   currentProject.renderTodos();
+  localStorage.clear();
+  localStorage.setItem('projects', JSON.stringify(projectsArray));
   todoEvents();
   form.reset();
   formContainer.classList.toggle('hide');
@@ -274,11 +280,13 @@ createProjBtn.addEventListener('click', (e) => {
   currentProject.render();
   currentProject.renderTodos();
   setCurrentProj();
+  localStorage.clear();
+  localStorage.setItem('projects', JSON.stringify(projectsArray));
   newProjectname.value = '';
   projectFormContainer.classList.toggle('hide2');
 });
 
-formCancelBtn.addEventListener('click', (e) => { 
+formCancelBtn.addEventListener('click', (e) => {
   e.preventDefault();
   formContainer.classList.toggle('hide');
   form.reset();
@@ -289,27 +297,35 @@ closeProjForm.addEventListener('click', (e) => {
   projectFormContainer.classList.toggle('hide2');
   newProjectname.value = '';
 });
-  
+
 // set events for current project on initial page load
 
-let todo1 = Todo('Buy Milk', 'Buy milk for the family', '2020-01-01', 'High');
-let todo2 = Todo('Buy Bread', 'Buy bread for the family', '2020-01-01', 'High');
-let todo3 = Todo('Buy Eggs', 'Buy eggs for the family', '2020-01-01', 'High');
-let todo4 = Todo('Buy flower', 'Buy flower for the family', '2020-01-01', 'High');
-let project1 = Project('Family time');
-let project2 = Project('Work');
+if (projectFormContainer.length <= 0) {
+   projectFormContainer.append('<p>No projects yet!</p>');
+}
 
-project1.addTodo(todo1);
-project1.addTodo(todo3);
-project1.addTodo(todo4);
-project2.addTodo(todo2);
-projectsArray.push(project1, project2);
-project1.render();
-project2.render();
-currentProject = projectsArray[0];
-currentProjTitle.innerHTML = currentProject.name;
-currentProject.renderTodos();
-setCurrentProj();
-deleteTodoEvent(currentProject);
-toggleTodoCheck(currentProject);
-editTodoEvent(currentProject);
+
+window.addEventListener('load', () => {
+  const getItems = localStorage.getItem('projects');
+  const parsedProjects = JSON.parse(getItems);
+  const objArray = [...parsedProjects]
+  projectsArray = [];
+  console.log(projectsArray);
+  objArray.forEach(project => {
+    const projectObj = Project(project.name);
+    projectsArray.push(projectObj);
+    project.todos.forEach(todo => {
+      const todoObj = Todo(todo.title, todo.description, todo.dueDate, todo.priority);
+      projectObj.addTodo(todoObj);
+    });
+    projectObj.render();
+    currentProjTitle.innerHTML = projectObj.name;
+  });
+  currentProject = projectsArray[projectsArray.length - 1];
+  currentProjTitle.innerHTML = currentProject.name;
+  currentProject.renderTodos();
+  setCurrentProj();
+  todoEvents();
+});
+
+// localStorage.clear();
