@@ -229,6 +229,7 @@ label:first-child {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    justify-content: center;
 }
 
 .project-form-header > div {
@@ -238,6 +239,10 @@ label:first-child {
     text-align: end;
     font-size: 1.5rem;
     background: none;
+    position: relative;
+    float: right;
+    position: relative;
+    left: 20px;
 }
 
 .close-project-form:hover {
