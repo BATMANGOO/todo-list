@@ -135,9 +135,6 @@ function setCurrentProj() {
 
       if (targetClassList.contains('project-delete')) {
         deleteProjEvent(project, e);
-        console.log({
-          currentProject
-        })
       } else {
         currentProject = clickedProject;
         currentProjTitle.innerHTML = currentProject.name;
@@ -162,7 +159,6 @@ function deleteTodoEvent(currentProject) {
       if (e.target.classList.contains('delete-todo')) {
         todoContainer.removeChild(todo);
         currentProject.deleteTodo(e.target.parentNode.parentNode.getAttribute('data-id'));
-        console.log(currentProject.getTodos());
       }
     })
   })
@@ -196,6 +192,7 @@ function editTodoEvent(currentProject) {
         const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
         const chosenTodo = currentProject.getTodo(todoID);
         const editForm = document.createElement('form');
+        // replace todo with edit form
         editForm.innerHTML = `
           <div class="form-group">
             <label for="title">Title</label>
@@ -230,7 +227,6 @@ function editTodoEvent(currentProject) {
           const priority = editForm.querySelector('#priority').value;
           const editedTodo = currentProject.editTodo(todoID, title, description, dueDate, priority);
           todoContainer.replaceChild(editedTodo.render(), editForm);
-          console.log(currentProject.getTodos());
           todoEvents();
         });
       }
@@ -302,13 +298,13 @@ if (projectFormContainer.length <= 0) {
    projectFormContainer.append('<p>No projects yet!</p>');
 }
 
-
+// retreiving projects from local storage
 window.addEventListener('load', () => {
   const getItems = localStorage.getItem('projects');
   const parsedProjects = JSON.parse(getItems);
   const objArray = [...parsedProjects]
+  // set projectsArray to an empty array to prevent duplicate objects
   projectsArray = [];
-  console.log(projectsArray);
   objArray.forEach(project => {
     const projectObj = Project(project.name);
     projectsArray.push(projectObj);
