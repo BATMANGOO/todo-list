@@ -188,7 +188,6 @@ function editTodoEvent(currentProject) {
   todos.forEach(todo => {
     todo.addEventListener('click', e => {
       if (e.target.classList.contains('edit-todo')) {
-        // formContainer.classList.toggle('hide');
         const todoID = e.target.parentNode.parentNode.getAttribute('data-id');
         const chosenTodo = currentProject.getTodo(todoID);
         const editForm = document.createElement('form');
